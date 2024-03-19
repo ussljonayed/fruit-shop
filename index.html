@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid lightgray;
+            padding: 10px;
+
+        }
+
+        td {
+            padding: 6px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+
+        }
+
+        .context {
+            width: 800px;
+            padding: 5px;
+        }
+
+        .context .body {
+
+
+            display: flex;
+            gap: 20px;
+            flex-flow: row wrap;
+        }
+
+        .item {
+            width: 200px;
+            height: 350px;
+            background-color: bisque;
+            box-shadow: 0 0 10px 2px rgba(0, 0, 0, .1);
+
+            cursor: pointer;
+
+        }
+
+        .photo {
+            overflow: hidden;
+        }
+
+        .item .photo img {
+            transition: .5s ease-in-out;
+
+
+        }
+
+        .item .photo img:hover {
+            transform: scale(1.5);
+        }
+
+
+
+        h3 {
+            margin: 0;
+            padding: 0;
+        }
+
+        .item-body {
+            padding: 10px;
+        }
+
+        .item-footer {
+            margin-top: 20px;
+        }
+
+        .cart {
+            margin-left: 20px;
+            width: 450px;
+            min-height: 100px;
+
+        }
+
+        input[type="button"] {
+            cursor: pointer;
+            padding: 4px
+        }
+
+        #search {
+            padding: 10px;
+            width: 100%;
+        }
+
+        .btn-action {
+            /* background-color: #EA4C89;
+            border-radius: 8px;
+            border-style: none;
+            box-sizing: border-box;
+            color: #FFFFFF;
+            cursor: pointer;
+            display: inline-block;
+            font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            height: 40px;
+            line-height: 20px;
+            list-style: none;
+            margin: 0;
+            outline: none;
+            padding: 10px 16px;
+            position: relative;
+            text-align: center;
+            text-decoration: none;
+            transition: color 100ms;
+            vertical-align: baseline;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation; */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="context">
+                <input type="text" id="search" placeholder="Search..." />
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="context">
+                <div class="body">
+
+                </div>
+            </div>
+            <div class="cart">
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <script>
+
+        //........JSON Data.........//
+        let products = [
+            { Id: 1, Name: "Banana Chompa", Uomld: 1, Price: 25, Quantity: "(4 pcs)", Photo: "Banana_Chompa.webp", BrandId: 1 },
+            { Id: 2, Name: "Amloki Amla", Uomld: 1, Price: 545, Quantity: "(1 kg)", Photo: "AmlokiAmla.webp", BrandId: 1 },
+            { Id: 3, Name: "Malta", Uomld: 1, Price: 289, Quantity: "(1 kg)", Photo: "Malta.webp", BrandId: 1 },
+            { Id: 4, Name: "Daab", Uomld: 1, Price: 139, Quantity: "(1 pcs)", Photo: "Daab.webp", BrandId: 1 },
+            { Id: 5, Name: "Guava", Uomld: 1, Price: 85, Quantity: "(1 kg)", Photo: "Guava.webp", BrandId: 1 },
+            { Id: 6, Name: "Bangla Banana", Uomld: 1, Price: 35, Quantity: "(4 pcs)", Photo: "BanglaBanana.webp", BrandId: 1 },
+            { Id: 7, Name: "Palm Fruit", Uomld: 1, Price: 45, Quantity: "(1 pcs)", Photo: "PalmFruit.webp", BrandId: 1 },
+            { Id: 8, Name: "Red Grapes", Uomld: 1, Price: 499, Quantity: "(1 kg)", Photo: "RedGrapes.webp", BrandId: 1 },
+            { Id: 9, Name: "Pineapple", Uomld: 1, Price: 79, Quantity: "(1 pcs)", Photo: "Pineapple.webp", BrandId: 1 },
+            { Id: 10, Name: "Hog Plum", Uomld: 1, Price: 79, Quantity: "(1 kg)", Photo: "HogPlum.webp", BrandId: 1 },
+            { Id: 11, Name: "Pomegranate", Uomld: 1, Price: 529, Quantity: "(1 kg)", Photo: "Pomegranate.webp", BrandId: 1 },
+            { Id: 12, Name: "Papaya", Uomld: 1, Price: 159, Quantity: "(1 kg)", Photo: "Papaya.webp", BrandId: 1 },
+            { Id: 13, Name: "Green Apple", Uomld: 1, Price: 379, Quantity: "(1 kg)", Photo: "GreenApple.webp", BrandId: 1 },
+            { Id: 14, Name: "Wood Apple", Uomld: 1, Price: 49, Quantity: "(1 pcs)", Photo: "WoodApple.webp", BrandId: 1 },
+            { Id: 15, Name: "Pomelo", Uomld: 1, Price: 69, Quantity: "(1 pcs)", Photo: "Pomelo.webp", BrandId: 1 },
+            { Id: 16, Name: "Orange", Uomld: 1, Price: 379, Quantity: "(1 kg)", Photo: "Orange.webp", BrandId: 1 },
+            { Id: 17, Name: "Dragon Fruit", Uomld: 1, Price: 359, Quantity: "(1 kg)", Photo: "DragonFruit.webp", BrandId: 1 },
+            { Id: 18, Name: "Mango", Uomld: 1, Price: 159, Quantity: "(1 kg)", Photo: "Mango.webp", BrandId: 1 },
+            { Id: 19, Name: "Green Grapes", Uomld: 1, Price: 449, Quantity: "(1 kg)", Photo: "GreenGrapes.webp", BrandId: 1 },
+            { Id: 20, Name: "Coconut", Uomld: 1, Price: 129, Quantity: "(1 pcs)", Photo: "Coconut.webp", BrandId: 1 },
+            { Id: 21, Name: "Chalta", Uomld: 1, Price: 49, Quantity: "(1 pcs)", Photo: "Chalta.webp", BrandId: 1 },
+        ];
+
+        let cart = [];
+
+        printProducts(products);
+        printCart();
+
+
+
+
+
+        function printProducts(items) {
+            let pList = document.querySelector(".body");
+
+            let html = ``;
+            items.forEach((product) => {
+                html += `<div class='item'>`
+                html += `<div class='photo'><img src='img/${product.Photo}' width='100%' /></div>`
+                html += `<div class='item-body'>`
+                html += `<h3>${product.Name}</h3>`
+                html += `<div><del>Regular Price: ${product.Price + 25} Tk</del></div>`
+                html += `<div>Offer Price: ${product.Price} Tk</div>`
+                html += `<h3>${product.Quantity}</h3>`
+                html += `<div class='item-footer'>
+                      <input type='button' onclick=addToBag(${product.Id}) value='Add to Bag' />
+                    </div>`
+                html += `</div>`
+                html += `</div>`
+            });
+
+            pList.innerHTML = html;
+        }
+
+        //............Cart Operation............//
+
+        function addToBag(Id) { //1
+
+            //...........find if item is already exists............//
+            let c = cart.find((p) => {
+                return p.Id == Id;//1
+            });
+
+            if (c) { //.......if found...........//   
+                c.Qty++;
+
+            } else {   //......if not found find product details by id ............//  
+
+                let p = products.find((product) => {
+                    return product.Id == Id;
+                });
+
+                n = { Id: p.Id, Name: p.Name, Qty: 1, Price: p.Price, Photo: p.Photo }
+                cart.push(n);
+
+            }
+
+
+            printCart();
+
+            document.getElementById("search").value = ""
+            document.getElementById("search").focus();
+            printProducts(products);
+
+        }
+
+        function printCart() {
+            let elCart = document.querySelector(".cart");
+
+            let html = ``;
+            html += "<table class='print'>";
+            html += "<tr><th>SN</th><th>Photo</th><th>Name</th><th>Price</th><th>Qty</th><th>Total</th><th></th><tr>";
+            let sn = 1;
+            total = 0;
+            cart.forEach((product) => {
+                html += `<tr>
+                <td>${sn++}</td>
+                <td><img src=img/${product.Photo} width='50' /></td>
+                <td>${product.Name}</td>
+                <td>${product.Price}</td> 
+                <td>${product.Qty}</td>              
+                <td>${product.Price * product.Qty}</td> 
+                <td>
+                    <button class="btn-action" onclick=updateCart(${product.Id},1)>+</button>
+                    <button onclick=updateCart(${product.Id},-1)>-</button>
+                    <button onclick=deleteItem(${product.Id})>Del</button>
+                </td>                            
+                </tr>`;
+                total = total + product.Price * product.Qty;
+            });
+            html += `<tr><th colspan='5' style='text-align:right'>Total</th><th>${total}</th><th></th></tr>`;
+            html += `<tr><th colspan='7'><button  onclick='processOrder()'>Order</button><button  onclick='clearCart()'>Clear Cart</button></th></tr>`;
+            html += "</table>";
+
+            elCart.innerHTML = html;
+
+        }
+
+        function deleteItem(Id) {
+
+            cart = cart.filter((item) => {
+                return item.Id != Id;
+            });
+
+            printCart();
+        }
+
+        function clearCart() {
+            cart = [];
+            printCart();
+        }
+
+        function updateCart(Id, qty) {
+
+            cart.forEach((p) => {
+                if (p.Id == Id) p.Qty += qty;
+                if (p.Qty < 1) p.Qty = 1;
+            });
+
+            printCart();
+        }
+
+
+        //...........Process Order and Print Receipt...........//
+        function processOrder() {
+
+            let w = open('', '', `width=300,height=400,left=${screen.width / 2 - 100},top=100`);
+            w.document.write("<h1>Money Receipt</h1>");
+
+            let c = document.querySelector(".cart");
+
+            let str = c.innerHTML.replace(/<button.*?>.*?<\/button>/ig, '');
+
+            w.document.write(str);
+            w.document.write("<input type='button' value='Print' onclick='self.print()' />");
+
+            console.log(cart);
+
+        }
+        //.............Search..................//
+
+        document.getElementById("search").addEventListener("input", (e) => {
+
+
+            let rx = new RegExp(e.target.value.toLowerCase());
+
+            let items = products.filter((product) => {
+                return product.Name.toLowerCase().match(rx);
+            });
+
+            printProducts(items);
+
+
+        });
+
+
+    </script>
+</body>
+
+</html>
